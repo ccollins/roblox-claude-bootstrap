@@ -1,0 +1,24 @@
+# Rojo
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+
+# Wally
+Packages/
+DevPackages/
+wally.lock
+
+# Roblox Studio
+*.rbxl.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.cursor/
+
+# Screenshots
+screenshots/

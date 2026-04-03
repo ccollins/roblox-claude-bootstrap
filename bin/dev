@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export PATH="$HOME/.rokit/bin:$PATH"
+
+if ! command -v rojo &>/dev/null; then
+	echo "Rojo not found. Run bin/setup first."
+	exit 1
+fi
+
+echo "Starting Rojo server..."
+echo "Connect from Roblox Studio via the Rojo plugin."
+echo ""
+rojo serve

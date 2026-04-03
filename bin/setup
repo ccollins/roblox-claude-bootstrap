@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "==> Installing Rokit..."
+if command -v rokit &>/dev/null; then
+	echo "    Rokit already installed, skipping"
+else
+	curl -sSf https://raw.githubusercontent.com/rojo-rbx/rokit/main/scripts/install.sh | bash
+	export PATH="$HOME/.rokit/bin:$PATH"
+	echo ""
+	echo "    NOTE: You may need to restart your terminal for PATH changes to take effect."
+fi
+
+echo "==> Initializing Rokit and installing tools..."
+rokit init 2>/dev/null || true
+
+TOOLS=(
+	rojo-rbx/rojo
+	UpliftGames/wally
+	Kampfkarren/selene
+	JohnnyMorganz/StyLua
+)
+
+rokit trust "${TOOLS[@]}"
+for tool in "${TOOLS[@]}"; do
+	rokit add "$tool" 2>/dev/null || rokit update "$tool" 2>/dev/null || true
+done
+
+echo "==> Installing Wally packages..."
+wally install
+
+echo "==> Installing Rojo plugin for Roblox Studio..."
+rojo plugin install
+
+echo ""
+echo "Setup complete! Run bin/dev to start the Rojo server."
+echo ""
+echo "NOTE: If Roblox Studio was open during setup, restart it to load the Rojo plugin."
