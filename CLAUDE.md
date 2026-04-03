@@ -72,6 +72,10 @@ src/shared/          -- ReplicatedStorage (shared modules)
 - **MCP (`execute_luau`)**: Terrain, lighting, part placement, visual iteration — anything you want to see immediately in Edit mode
 - **Rojo**: Game logic, services, controllers, modules — anything that needs version control
 
+### General Rules
+- **Roblox Studio updates frequently.** Never assume a property, feature, or UI element exists based on docs or training data. Use `inspect_instance` or `search_game_tree` to verify before suggesting manual steps. Example: `Lighting.Technology` was replaced by Unified Lighting — the property no longer exists in the UI.
+- **`execute_luau` cannot write some properties** (e.g. `Lighting.Technology`) due to engine capability restrictions. When a property fails, note it and find an alternative.
+
 ### Critical Rules for MCP Usage
 - **`screen_capture` is EXPENSIVE** — each screenshot costs ~1,334 tokens and stays in context permanently. Use sparingly, only after major milestones. NEVER take screenshots after every small change.
 - **Verify changes programmatically** — use `search_game_tree` and `inspect_instance` instead of screenshots whenever possible.
