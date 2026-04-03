@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Creates a new Roblox game project from the bootstrap template.
+# Usage: bin/init-new-project [project-name]
+
+BOOTSTRAP_REPO="https://github.com/ccollins/roblox-claude-bootstrap.git"
+
+NAME="${1:-}"
+if [ -z "$NAME" ]; then
+	read -rp "Project name: " NAME
+fi
+
+if [ -z "$NAME" ]; then
+	echo "Error: project name is required."
+	exit 1
+fi
+
+TARGET="$(pwd)/$NAME"
+
+if [ -d "$TARGET" ]; then
+	echo "Error: directory '$TARGET' already exists."
+	exit 1
+fi
+
+echo "==> Cloning bootstrap into $NAME..."
+git clone "$BOOTSTRAP_REPO" "$TARGET"
+
+echo "==> Cleaning up..."
+rm -rf "$TARGET/.git"
+rm -f "$TARGET/bin/init-new-project"
+
+echo "==> Initializing fresh git repo..."
+cd "$TARGET"
+git init
+git add -A
+git commit -m "Initial project scaffold from roblox-claude-bootstrap"
+
+echo "==> Running setup..."
+bin/setup
+
+echo ""
+echo "Project '$NAME' is ready at $TARGET"
+echo "Next steps:"
+echo "  cd $NAME"
+echo "  bin/dev"
