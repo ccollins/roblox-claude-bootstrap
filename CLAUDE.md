@@ -4,6 +4,10 @@
 
 Read `zClaude/README.md` to understand the project structure, then consult files in `zClaude/CoreKnowledge/` as needed for the task at hand.
 
+## Bootstrap Repo
+
+This project was bootstrapped from https://github.com/ccollins/roblox-claude-bootstrap. When you discover new **core Roblox knowledge** (not game-specific), consider whether it should be pushed upstream to the bootstrap repo so future projects benefit. This includes: CLAUDE.md convention changes, new CoreKnowledge docs, tooling improvements, MCP best practices, and bin/ script enhancements.
+
 ## Stack
 - **Language**: Luau (strict type annotations)
 - **Sync**: Rojo (filesystem <-> Roblox Studio)
