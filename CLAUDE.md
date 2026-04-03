@@ -90,6 +90,30 @@ src/shared/          -- ReplicatedStorage (shared modules)
   ```
 - **Use `/compact` aggressively** during MCP sessions, especially after any `screen_capture` calls.
 - **Save the place file before big operations** — MCP modifies the place directly.
+- **Never leave artifacts only in Studio** — always have a reproducible `.luau` script in `bin/` that generates the same result. Ad-hoc MCP calls create fragile state that can't be reproduced when things go wrong. Use `ReplaceMaterial` to change surface materials without geometry changes.
+
+### Reproducible World Generation
+All programmatic artifacts (terrain, lighting, structures, etc.) must have corresponding `.luau` scripts in `bin/` that can regenerate them from scratch. Scripts should:
+- Clear existing state before generating (idempotent)
+- Use deterministic RNG seeds (`Random.new(42)`) for identical output every run
+- Be executable via MCP `execute_luau` or Studio's Command Bar
+- Be version-controlled in git — the script is the source of truth, not the place file
+
+Organize scripts by system:
+```
+bin/
+  regenerate-world       -- runs all generation scripts in order
+  terrain/
+    generate.luau        -- terrain, structures, vegetation
+    lighting.luau        -- lighting, atmosphere, post-processing
+    regenerate           -- runs terrain scripts only
+  wildlife/              -- (future) ambient creature spawning
+```
+
+Define regeneration commands in CLAUDE.md so the AI knows what to run:
+- **"regenerate terrain"** → execute terrain scripts via MCP
+- **"regenerate world"** → execute ALL scripts in order via MCP
+- Add new systems to the regeneration list as they are built
 
 ### Terrain Best Practices (Roblox Engine)
 - Water `FillCylinder` REPLACES solid terrain — to create varying depth, fill water first, then place solid terrain on top to displace it

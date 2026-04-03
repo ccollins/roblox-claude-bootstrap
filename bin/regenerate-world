@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Regenerates the full world — all programmatic artifacts.
+# Ask Claude: "regenerate world"
+#
+# Scripts are executed in order:
+#   1. bin/terrain/generate.luau   — terrain and structures
+#   2. bin/terrain/lighting.luau   — lighting, atmosphere, post-processing
+#
+# Add new scripts here as you build more systems.
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+echo "=== Regenerate World ==="
+echo ""
+echo "Scripts executed in order:"
+echo ""
+echo "  1. Terrain:   $SCRIPT_DIR/terrain/generate.luau"
+echo "  2. Lighting:  $SCRIPT_DIR/terrain/lighting.luau"
+echo ""
+echo "Ask Claude: 'regenerate world'"
+echo "  Claude will execute each script via MCP in order"
+echo ""
