@@ -98,6 +98,7 @@ All programmatic artifacts (terrain, lighting, structures, etc.) must have corre
 - Use deterministic RNG seeds (`Random.new(42)`) for identical output every run
 - Be executable via MCP `execute_luau` or Studio's Command Bar
 - Be version-controlled in git — the script is the source of truth, not the place file
+- **CRITICAL: Update generation scripts immediately after EVERY MCP change.** Never batch up MCP terrain/asset fixes without updating the corresponding script. If you modify terrain, place assets, or adjust positions via MCP `execute_luau`, update `bin/terrain/generate.luau` (or the relevant script) in the same step. The script must always reproduce the current world state. Failing to do this causes the script and Studio to drift apart, making "regenerate world" produce a different result than what's in the place file.
 
 Organize scripts by system:
 ```
