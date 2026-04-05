@@ -123,3 +123,37 @@ Define regeneration commands in CLAUDE.md so the AI knows what to run:
 - Set parent last on all Instances
 - Use deterministic RNG seeds (`Random.new(42)`) for reproducible world generation
 - Ground layers must be thick enough (12+ studs) to prevent showing through
+- **Water fill order: Air → Water → Mud** (not Air → Mud → Water). Roblox terrain cannot overwrite solid material with Water. Fill water first in cleared air space, then place a thin mud floor at the bottom which replaces only the lowest water voxels.
+
+### Testing
+
+Use TestEZ (BDD-style testing framework) for unit tests. Add to `wally.toml`:
+```toml
+[dev-dependencies]
+TestEZ = "roblox/testez@0.4.1"
+```
+
+Run `wally install` to download. Wally places it in `DevPackages/` (gitignored).
+
+**Project setup:**
+- Add `DevPackages` to `default.project.json` under ReplicatedStorage
+- Add a `TestRunner` server script path under ServerScriptService
+- Test runner should only execute when `ServerScriptService:GetAttribute("RunTests")` is true
+
+**Test file convention:**
+- Specs go in `src/test/` mirroring the source structure
+- Name test files `*.spec.luau` (TestEZ auto-discovers them)
+- Each spec returns a function using `describe`/`it`/`expect`
+
+**What to test:**
+- Extract pure logic into shared utility modules (no Roblox Instance dependencies)
+- Test math functions, state transitions, boundary checks, scaling calculations
+- Use MCP `execute_luau` scripts in `bin/test/` for integration tests during Play mode
+
+**Running tests:**
+1. In Studio: `ServerScriptService:SetAttribute("RunTests", true)` then Play
+2. Integration tests: Execute `bin/test/integration.luau` via MCP during Play
+
+**What NOT to test directly:**
+- CFrame manipulation, Model placement, Terrain fills — these require a running Studio
+- Use integration tests (MCP scripts) for these instead
